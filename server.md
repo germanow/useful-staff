@@ -1,6 +1,8 @@
 ## Установка php как модуля апача
 
+```
 apt-get install libapache2-mod-php7.1
+```
 
 ## Установка php 7.1
 
