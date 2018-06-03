@@ -1,7 +1,7 @@
 let mix = require('laravel-mix');
 
-
-function mix_js_files(folder) {
+// Функция для билда файлов по отдельности рекурсивно
+function mix_js_files_recursive(folder) {
     let fs = require('fs');
     var relative_path = "resources/assets/js" + folder;
     var paths = fs.readdirSync(relative_path);
@@ -10,6 +10,8 @@ function mix_js_files(folder) {
             var file_path = relative_path + paths[i];
             console.log(file_path);
             mix.js(file_path, 'public/js' + folder);
+        } else {
+            mix_js_files_recursive(folder+paths[i]+'/');
         }
     }
 }
@@ -25,19 +27,18 @@ function mix_js_files(folder) {
  */
 
 mix.js('resources/assets/index.js', 'public/js')
-	.sass('resources/assets/index.scss', 'public/css')
-	.options({
-		processCssUrls: true,
-		imgLoaderOptions: {
-			enabled: false,
-		}
-	});
+    .sass('resources/assets/index.scss', 'public/css')
+    .options({
+        processCssUrls: true,
+        imgLoaderOptions: {
+            enabled: false,
+        }
+    });
 
 if (mix.inProduction()) {
     mix.version();
 }
 
-mix_js_files('/pages/');
-mix_js_files('/pages/task_tabs/');
-mix_js_files('/components/');
+mix_js_files_recursive('/pages/');
+mix_js_files_recursive('/components/');
 
